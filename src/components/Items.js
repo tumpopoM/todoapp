@@ -1,27 +1,38 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import CheckBox from './CheckBox';
 
 const Items = props => {
-  const [checkBoxValue, setCheckBoxValue] = useState(false);
+  // const [checkBoxValue, setCheckBoxValue] = useState(false);
 
   return (
-    <View style={styles.item}>
-      <View style={styles.boxLeft}>
-        <CheckBox
-          value={checkBoxValue}
-          onChange={() => {
-            setCheckBoxValue(!checkBoxValue);
-          }}
-        />
-        <Text style={styles.btnMark}>Mark</Text>
-        <Text style={styles.title}>{props.text}</Text>
-      </View>
-      <View style={styles.boxRight}>
-        <Text style={styles.btnEdit}>Edit</Text>
-        <Text style={styles.btnDelete}>Del</Text>
-      </View>
-    </View>
+    <>
+      {props.data.map((item, i) => (
+        <View key={i} style={styles.item}>
+          <View style={styles.boxLeft}>
+            <CheckBox value={item.isDone} onChange={props.onPressCheckBox} />
+            <TouchableOpacity onPress={props.onPressItem}>
+              <View style={styles.textWidth}>
+                <Text style={styles.title}>{item.title}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.boxRight}>
+            <TouchableOpacity onPress={props.onPressEdit}>
+              <View style={styles.btnEdit}>
+                <Icon size={20} color="black" name="edit" />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={props.onPressDelete}>
+              <View style={styles.btnDelete}>
+                <Icon size={20} color="black" name="trash-alt" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ))}
+    </>
   );
 };
 
@@ -39,17 +50,24 @@ const styles = StyleSheet.create({
   boxLeft: {
     flex: 0.8,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   boxRight: {
     flex: 0.2,
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
-  btnMark: {
-    marginRight: 10,
+  btnEdit: {
+    marginRight: 15,
   },
-  edibtnEdit: {
-    marginRight: 10,
+  title: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  textWidth: {
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    alignItems: 'center',
+    height: 22,
   },
 });
 
