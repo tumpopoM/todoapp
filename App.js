@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Alert, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import Items from './src/components/Items';
 
 const todos = [
@@ -13,26 +14,58 @@ const todos = [
   {
     id: 2,
     title: 'Exercitation exercitation.',
+    description: 'Dolor aute sint veniam id enim ullamco.',
+    dateTime: new Date().getTime(),
+    isDone: true,
+  },
+  {
+    id: 3,
+    title: 'Qui cillum culpa.',
     description:
-      'Labore veniam pariatur et esse dolore deserunt est minim aute tempor aliquip velit minim.',
+      'Aute elit ullamco laborum deserunt consectetur do adipisicing.',
+    dateTime: new Date().getTime(),
+    isDone: false,
+  },
+  {
+    id: 4,
+    title: 'Irure quis labore excepteur aliqua.',
+    description:
+      'Proident ex consequat amet dolor enim ipsum consectetur aute eu.',
     dateTime: new Date().getTime(),
     isDone: false,
   },
 ];
 
 const App = () => {
-  const onPressCheckBox = useCallback(item => {}, []);
+  const onPressAddTasks = useCallback(item => {
+    return Alert.alert('onPressAddTasks');
+  }, []);
 
-  const onPressItem = useCallback(item => {}, []);
+  const onPressCheckBox = useCallback(item => {
+    return Alert.alert('onPressCheckBox');
+  }, []);
 
-  const onPressEdit = useCallback(item => {}, []);
+  const onPressItem = useCallback(item => {
+    return Alert.alert('onPressItem');
+  }, []);
 
-  const onPressDelete = useCallback(item => {}, []);
+  const onPressEdit = useCallback(item => {
+    return Alert.alert('onPressEdit');
+  }, []);
+
+  const onPressDelete = useCallback(item => {
+    return Alert.alert('onPressDelete');
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.titleArea}>
         <Text style={styles.titleText}> Remainder </Text>
+        <TouchableOpacity onPress={onPressAddTasks}>
+          <View style={styles.btnAddTasks}>
+            <Icon size={20} color="black" name="plus" />
+          </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.itemWrapper}>
         <Items
@@ -55,21 +88,31 @@ const styles = StyleSheet.create({
   },
   titleArea: {
     flexDirection: 'row',
-    backgroundColor: '#F8F8F8',
-    justifyContent: 'center',
-    padding: 10,
-    // height: 60,
-    // shadowColor: "#000000",
-    // shadowOffset: {width: 0, height: 2},
-    // elevation: 3,
-    // shadowOpacity: 0.2,
+    alignItems: 'center',
+    // justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginTop: 10,
   },
   titleText: {
     fontWeight: 'bold',
     fontSize: 20,
+    flex: 0.98,
   },
   itemWrapper: {
     padding: 20,
+  },
+  btnAddTasks: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 35,
+    height: 35,
+    backgroundColor: '#ffffff',
+    borderRadius: 50,
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    elevation: 5,
   },
 });
 
