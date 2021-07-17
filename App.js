@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
-  KeyboardAvoidingView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Input from './src/components/Input';
@@ -48,15 +47,34 @@ const initTodos = [
 
 const App = () => {
   const [isShowAddTasks, setIsShowAddTasks] = useState(false);
-  const [todos, setTodos] = useState(initTodos);
+  const [todos, setTodos] = useState([]);
   const [inputTitle, setInputTitle] = useState('');
   const [inputDescription, setInputDescription] = useState('');
+  const [isShowEditTasks, setIsShowEditTasks] = useState(false);
+  const [idEdit, setIdEdit] = useState(null);
 
   const onPressShowAddTasks = useCallback(
     item => {
-      return setIsShowAddTasks(!isShowAddTasks);
+      setIsShowAddTasks(!isShowAddTasks);
     },
     [isShowAddTasks],
+  );
+
+  const onPressShowEditTasks = useCallback(
+    item => {
+      setIsShowEditTasks(!isShowEditTasks);
+      if (item.id > 0) {
+        const titleValue = item.title;
+        const descriptionValue = item.description;
+        setInputTitle(titleValue);
+        setInputDescription(descriptionValue);
+        setIdEdit(item.id);
+      } else {
+        setInputTitle('');
+        setInputDescription('');
+      }
+    },
+    [isShowEditTasks],
   );
 
   const onPressAddTasks = useCallback(
@@ -92,9 +110,19 @@ const App = () => {
     return Alert.alert('onPressItem');
   }, []);
 
-  const onPressEdit = useCallback(item => {
-    return Alert.alert('onPressEdit');
-  }, []);
+  const onPressEdit = useCallback(
+    id => {
+      const data = [...todos];
+      const index = data.findIndex(i => {
+        return i.id === id;
+      });
+      data[index].title = inputTitle;
+      data[index].description = inputDescription;
+      setTodos(data);
+      setIsShowEditTasks(!isShowEditTasks);
+    },
+    [inputDescription, inputTitle, isShowEditTasks, todos],
+  );
 
   const onPressDelete = useCallback(item => {
     const data = [...todos];
@@ -122,23 +150,26 @@ const App = () => {
             data={todos}
             onPressCheckBox={onPressCheckBox}
             onPressItem={onPressItem}
-            onPressEdit={onPressEdit}
+            onPressShowEditTasks={onPressShowEditTasks}
             onPressDelete={onPressDelete}
           />
         </ScrollView>
       </View>
-      <KeyboardAvoidingView behavior="padding">
-        <Modal
-          transparent={true}
-          visible={isShowAddTasks}
-          animationType="slide">
+      <Modal transparent={true} visible={isShowAddTasks} animationType="slide">
+        <View style={styles.modalAddContainer}>
           <View style={styles.modalAdd}>
-            <TouchableOpacity onPress={onPressShowAddTasks}>
-              <View style={styles.modalClose}>
-                <Icon size={20} color="black" name="times" />
+            <View style={styles.titleContainer}>
+              <View style={styles.titleBox}>
+                <Text style={styles.title}>New Remainder</Text>
               </View>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={onPressShowAddTasks}>
+                <View style={styles.modalClose}>
+                  <Icon size={20} color="black" name="times" />
+                </View>
+              </TouchableOpacity>
+            </View>
             <Input
+              statusAction={'add'}
               onPressAddTasks={onPressAddTasks}
               valueTitle={inputTitle}
               setInputTitle={setInputTitle}
@@ -146,8 +177,33 @@ const App = () => {
               setInputDescription={setInputDescription}
             />
           </View>
-        </Modal>
-      </KeyboardAvoidingView>
+        </View>
+      </Modal>
+      <Modal transparent={true} visible={isShowEditTasks} animationType="slide">
+        <View style={styles.modalAddContainer}>
+          <View style={styles.modalAdd}>
+            <View style={styles.titleContainer}>
+              <View style={styles.titleBox}>
+                <Text style={styles.title}>Edit Remainder</Text>
+              </View>
+              <TouchableOpacity onPress={onPressShowEditTasks}>
+                <View style={styles.modalClose}>
+                  <Icon size={20} color="black" name="times" />
+                </View>
+              </TouchableOpacity>
+            </View>
+            <Input
+              statusAction={'edit'}
+              idEdit={idEdit}
+              onPressEdit={onPressEdit}
+              valueTitle={inputTitle}
+              setInputTitle={setInputTitle}
+              valueDescription={inputDescription}
+              setInputDescription={setInputDescription}
+            />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -185,18 +241,40 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     elevation: 5,
   },
-  modalClose: {
-    alignItems: 'flex-end',
-    marginTop: 15,
-    marginRight: 15,
+  modalAddContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 20,
   },
   modalAdd: {
-    height: '50%',
-    marginTop: 'auto',
-    backgroundColor: '#ffffff',
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
+    width: '100%',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
+  titleContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    marginLeft: 25,
+  },
+  titleBox: {
+    flex: 0.9,
+  },
+  title: {
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  modalClose: {},
 });
 
 export default App;
