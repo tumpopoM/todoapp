@@ -24,7 +24,10 @@ const Items = props => {
             </TouchableOpacity>
           </View>
           <View style={styles.boxRight}>
-            <TouchableOpacity onPress={props.onPressEdit}>
+            <TouchableOpacity
+              onPress={() => {
+                props.onPressShowEditTasks(item);
+              }}>
               <View style={styles.btnEdit}>
                 <Icon size={18} color="black" name="edit" />
               </View>
