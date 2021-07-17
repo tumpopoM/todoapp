@@ -119,6 +119,7 @@ const App = () => {
       data[index].title = inputTitle;
       data[index].description = inputDescription;
       setTodos(data);
+      setIdEdit(null);
       setIsShowEditTasks(!isShowEditTasks);
     },
     [inputDescription, inputTitle, isShowEditTasks, todos],
