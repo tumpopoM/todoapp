@@ -11,7 +11,13 @@ const Input = props => {
   return (
     <View style={styles.inputWrapper}>
       <View style={styles.inputTitle}>
-        <TextInput placeholder="Title" />
+        <TextInput
+          placeholder="Title"
+          value={props.valueTitle}
+          onChangeText={title => {
+            props.setInputTitle(title);
+          }}
+        />
       </View>
       <View style={styles.inputDescription}>
         <TextInput
@@ -19,6 +25,10 @@ const Input = props => {
           multiline={true}
           numberOfLines={4}
           textAlign={'left'}
+          value={props.valueDescription}
+          onChangeText={description => {
+            props.setInputDescription(description);
+          }}
         />
       </View>
       <TouchableOpacity onPress={props.onPressAddTasks}>
@@ -32,10 +42,8 @@ const Input = props => {
 
 const styles = StyleSheet.create({
   inputWrapper: {
-    backgroundColor: '#ffffff',
     padding: 20,
     flex: 1,
-    borderRadius: 10,
     margin: 10,
   },
   inputTitle: {

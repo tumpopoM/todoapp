@@ -6,6 +6,8 @@ import {
   Alert,
   TouchableOpacity,
   ScrollView,
+  Modal,
+  KeyboardAvoidingView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Input from './src/components/Input';
@@ -47,6 +49,8 @@ const initTodos = [
 const App = () => {
   const [isShowAddTasks, setIsShowAddTasks] = useState(false);
   const [todos, setTodos] = useState(initTodos);
+  const [inputTitle, setInputTitle] = useState('');
+  const [inputDescription, setInputDescription] = useState('');
 
   const onPressShowAddTasks = useCallback(
     item => {
@@ -55,9 +59,22 @@ const App = () => {
     [isShowAddTasks],
   );
 
-  const onPressAddTasks = useCallback(item => {
-    return Alert.alert('onPressAddTasks');
-  }, []);
+  const onPressAddTasks = useCallback(
+    item => {
+      const data = [...todos];
+      data.push({
+        id: data.length + 1,
+        title: inputTitle,
+        description: inputDescription,
+        dateTime: new Date().getTime(),
+        isDone: false,
+      });
+      setTodos(data);
+      setInputTitle('');
+      setInputDescription('');
+    },
+    [inputDescription, inputTitle, todos],
+  );
 
   const onPressCheckBox = useCallback(
     item => {
@@ -81,7 +98,7 @@ const App = () => {
 
   const onPressDelete = useCallback(item => {
     const data = [...todos];
-    const index = data.find(i => {
+    const index = data.findIndex(i => {
       return i.id === item.id;
     });
     data.splice(index, 1);
@@ -110,9 +127,27 @@ const App = () => {
           />
         </ScrollView>
       </View>
-      <View style={styles.inputContainer}>
-        {isShowAddTasks && <Input onPressAddTasks={onPressAddTasks} />}
-      </View>
+      <KeyboardAvoidingView behavior="padding">
+        <Modal
+          transparent={true}
+          visible={isShowAddTasks}
+          animationType="slide">
+          <View style={styles.modalAdd}>
+            <TouchableOpacity onPress={onPressShowAddTasks}>
+              <View style={styles.modalClose}>
+                <Icon size={20} color="black" name="times" />
+              </View>
+            </TouchableOpacity>
+            <Input
+              onPressAddTasks={onPressAddTasks}
+              valueTitle={inputTitle}
+              setInputTitle={setInputTitle}
+              valueDescription={inputDescription}
+              setInputDescription={setInputDescription}
+            />
+          </View>
+        </Modal>
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -122,7 +157,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     backgroundColor: '#e5e7ea',
-    position: 'relative',
   },
   titleArea: {
     flexDirection: 'row',
@@ -151,15 +185,17 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     elevation: 5,
   },
-  inputContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
+  modalClose: {
+    alignItems: 'flex-end',
+    marginTop: 15,
+    marginRight: 15,
+  },
+  modalAdd: {
+    height: '50%',
+    marginTop: 'auto',
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
 });
 
