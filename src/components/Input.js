@@ -31,20 +31,31 @@ const Input = props => {
           }}
         />
       </View>
-      <TouchableOpacity onPress={props.onPressAddTasks}>
-        <View style={styles.buttonAdd}>
-          <Text style={styles.buttonText}>Add</Text>
-        </View>
-      </TouchableOpacity>
+      {props.statusAction === 'add' && (
+        <TouchableOpacity onPress={props.onPressAddTasks}>
+          <View style={styles.buttonAdd}>
+            <Text style={styles.buttonText}>Add</Text>
+          </View>
+        </TouchableOpacity>
+      )}
+      {props.statusAction === 'edit' && (
+        <TouchableOpacity
+          onPress={() => {
+            props.onPressEdit(props.idEdit);
+          }}>
+          <View style={styles.buttonAdd}>
+            <Text style={styles.buttonText}>Save</Text>
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   inputWrapper: {
-    padding: 20,
-    flex: 1,
-    margin: 10,
+    padding: 10,
+    width: '100%',
   },
   inputTitle: {
     backgroundColor: '#e5e7ea',
@@ -68,6 +79,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 
