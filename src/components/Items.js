@@ -11,7 +11,12 @@ const Items = props => {
       {props.data.map((item, i) => (
         <View key={i} style={styles.item}>
           <View style={styles.boxLeft}>
-            <CheckBox value={item.isDone} onChange={props.onPressCheckBox} />
+            <CheckBox
+              value={item.isDone}
+              onChange={() => {
+                props.onPressCheckBox(item);
+              }}
+            />
             <TouchableOpacity onPress={props.onPressItem}>
               <View style={styles.textWidth}>
                 <Text style={styles.title}>{item.title}</Text>
@@ -21,12 +26,15 @@ const Items = props => {
           <View style={styles.boxRight}>
             <TouchableOpacity onPress={props.onPressEdit}>
               <View style={styles.btnEdit}>
-                <Icon size={20} color="black" name="edit" />
+                <Icon size={18} color="black" name="edit" />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={props.onPressDelete}>
+            <TouchableOpacity
+              onPress={() => {
+                props.onPressDelete(item);
+              }}>
               <View style={styles.btnDelete}>
-                <Icon size={20} color="black" name="trash-alt" />
+                <Icon size={18} color="black" name="trash-alt" />
               </View>
             </TouchableOpacity>
           </View>
@@ -48,7 +56,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   boxLeft: {
-    flex: 0.8,
+    flex: 0.9,
     flexDirection: 'row',
     alignItems: 'center',
   },
