@@ -23,7 +23,7 @@ const Input = props => {
         <TextInput
           placeholder="Description"
           multiline={true}
-          numberOfLines={4}
+          numberOfLines={10}
           textAlign={'left'}
           value={props.valueDescription}
           onChangeText={description => {
