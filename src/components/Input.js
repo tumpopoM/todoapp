@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
+  Alert,
 } from 'react-native';
 
 const Input = props => {
@@ -14,6 +15,7 @@ const Input = props => {
         <TextInput
           placeholder="Title"
           value={props.valueTitle}
+          maxLength={40}
           onChangeText={title => {
             props.setInputTitle(title);
           }}
@@ -23,8 +25,9 @@ const Input = props => {
         <TextInput
           placeholder="Description"
           multiline={true}
-          numberOfLines={10}
+          numberOfLines={5}
           textAlign={'left'}
+          textAlignVertical={'top'}
           value={props.valueDescription}
           onChangeText={description => {
             props.setInputDescription(description);
@@ -32,7 +35,14 @@ const Input = props => {
         />
       </View>
       {props.statusAction === 'add' && (
-        <TouchableOpacity onPress={props.onPressAddTasks}>
+        <TouchableOpacity
+          onPress={() => {
+            if (props.valueTitle.length > 0) {
+              props.onPressAddTasks();
+            } else {
+              Alert.alert('Please Enter Title');
+            }
+          }}>
           <View style={styles.buttonAdd}>
             <Text style={styles.buttonText}>Add</Text>
           </View>
@@ -54,7 +64,8 @@ const Input = props => {
 
 const styles = StyleSheet.create({
   inputWrapper: {
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
     width: '100%',
   },
   inputTitle: {
