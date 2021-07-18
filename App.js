@@ -7,6 +7,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
+const forFade = ({ current }) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+});
+
 const App = () => {
   return (
     <NavigationContainer>
@@ -14,9 +20,13 @@ const App = () => {
         <Stack.Screen
           name="TodoList"
           component={TodoList}
-          options={{title: 'Welcome'}}
+          options={{headerShown: false}}
         />
-        <Stack.Screen name="Detail" component={Detail} />
+        <Stack.Screen
+          name="Detail"
+          component={Detail}
+          options={{headerShown: false, cardStyleInterpolator: forFade}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
