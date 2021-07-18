@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
+  Button,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Input from '../components/Input';
@@ -45,7 +46,7 @@ const initTodos = [
   },
 ];
 
-const TodoList = () => {
+const TodoList = ({navigation}) => {
   const [isShowAddTasks, setIsShowAddTasks] = useState(false);
   const [isShowEditTasks, setIsShowEditTasks] = useState(false);
   const [todos, setTodos] = useState([]);
@@ -56,6 +57,8 @@ const TodoList = () => {
   const onPressShowAddTasks = useCallback(
     item => {
       setIsShowAddTasks(!isShowAddTasks);
+      setInputTitle('');
+      setInputDescription('');
     },
     [isShowAddTasks],
   );
@@ -80,11 +83,20 @@ const TodoList = () => {
   const onPressAddTasks = useCallback(
     item => {
       const data = [...todos];
+      const date = new Date();
+      const time = date.toLocaleTimeString().replace(/:\d+ /, ' ');
       data.push({
         id: data.length + 1,
         title: inputTitle,
         description: inputDescription,
-        dateTime: new Date().getTime(),
+        dateTime:
+          date.getDate() +
+          '/' +
+          (date.getMonth() + 1) +
+          '/' +
+          date.getFullYear() +
+          ', ' +
+          time,
         isDone: false,
       });
       setTodos(data);
@@ -106,9 +118,12 @@ const TodoList = () => {
     [todos],
   );
 
-  const onPressItem = useCallback(item => {
-    return Alert.alert('onPressItem');
-  }, []);
+  const onPressItem = useCallback(
+    item => {
+      navigation.navigate('Detail', {data: item});
+    },
+    [navigation],
+  );
 
   const onPressEdit = useCallback(
     id => {
@@ -213,7 +228,7 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flex: 1,
-    backgroundColor: '#e5e7ea',
+    backgroundColor: '#E8EaED',
   },
   titleArea: {
     flexDirection: 'row',
@@ -230,10 +245,9 @@ const styles = StyleSheet.create({
   itemWrapper: {
     paddingHorizontal: 20,
     paddingTop: 20,
-    paddingBottom: 50,
+    paddingBottom: 80,
   },
   btnAddTasks: {
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     width: 35,
@@ -268,10 +282,11 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     width: '100%',
-    marginLeft: 25,
+    marginLeft: 20,
+    marginBottom: 5,
   },
   titleBox: {
-    flex: 0.9,
+    flex: 0.95,
   },
   title: {
     fontSize: 15,

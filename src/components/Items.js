@@ -17,7 +17,10 @@ const Items = props => {
                 props.onPressCheckBox(item);
               }}
             />
-            <TouchableOpacity onPress={props.onPressItem}>
+            <TouchableOpacity
+              onPress={() => {
+                props.onPressItem(item);
+              }}>
               <View style={styles.textWidth}>
                 <Text style={styles.title}>{item.title}</Text>
               </View>
@@ -57,6 +60,9 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 10,
     marginBottom: 20,
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    elevation: 2,
   },
   boxLeft: {
     flex: 0.9,
@@ -71,7 +77,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   title: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '700',
   },
   textWidth: {
