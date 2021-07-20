@@ -3,15 +3,16 @@ import {
   View,
   Text,
   StyleSheet,
-  Alert,
   TouchableOpacity,
   ScrollView,
   Modal,
-  Button,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Input from '../components/Input';
 import Items from '../components/Items';
+import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {addTodo, deleteTodo} from '../actions/index';
 
 const initTodos = [
   {
@@ -49,7 +50,10 @@ const initTodos = [
 const TodoList = ({navigation}) => {
   const [isShowAddTasks, setIsShowAddTasks] = useState(false);
   const [isShowEditTasks, setIsShowEditTasks] = useState(false);
-  const [todos, setTodos] = useState([]);
+  // const [todos, setTodos] = useState([]);
+  // const todos = useSelect((rootState) => {rootState.todos});
+  const todos = useSelector(state => state.todosList);
+  const dispatch = useDispatch();
   const [inputTitle, setInputTitle] = useState('');
   const [inputDescription, setInputDescription] = useState('');
   const [idEdit, setIdEdit] = useState(null);
@@ -82,28 +86,19 @@ const TodoList = ({navigation}) => {
 
   const onPressAddTasks = useCallback(
     item => {
-      const data = [...todos];
-      const date = new Date();
-      const time = date.toLocaleTimeString().replace(/:\d+ /, ' ');
-      data.push({
-        id: data.length + 1,
+      const data = {
+        id: new Date().getTime(),
         title: inputTitle,
         description: inputDescription,
-        dateTime:
-          date.getDate() +
-          '/' +
-          (date.getMonth() + 1) +
-          '/' +
-          date.getFullYear() +
-          ', ' +
-          time,
+        dateTime: new Date(),
         isDone: false,
-      });
-      setTodos(data);
+      };
+      dispatch(addTodo(data));
       setInputTitle('');
       setInputDescription('');
+      setIsShowAddTasks(!isShowAddTasks);
     },
-    [inputDescription, inputTitle, todos],
+    [dispatch, inputDescription, inputTitle, isShowAddTasks],
   );
 
   const onPressCheckBox = useCallback(
@@ -141,12 +136,7 @@ const TodoList = ({navigation}) => {
   );
 
   const onPressDelete = useCallback(item => {
-    const data = [...todos];
-    const index = data.findIndex(i => {
-      return i.id === item.id;
-    });
-    data.splice(index, 1);
-    setTodos(data);
+    dispatch(deleteTodo(item.id));
     [todos];
   });
 
@@ -295,4 +285,4 @@ const styles = StyleSheet.create({
   modalClose: {},
 });
 
-export default TodoList;
+export default connect()(TodoList);
