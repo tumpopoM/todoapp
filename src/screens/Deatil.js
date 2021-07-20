@@ -9,6 +9,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Detail = ({navigation, route}) => {
+  const data = route.params.data;
   return (
     <View style={styles.container}>
       <View style={styles.titleArea}>
@@ -17,20 +18,18 @@ const Detail = ({navigation, route}) => {
             <Icon size={20} color="black" name="chevron-left" />
           </View>
         </TouchableOpacity>
-        <Text style={styles.titleText}> {route.params.data.title} </Text>
+        <Text style={styles.titleText}> {data.title} </Text>
       </View>
       <View style={styles.contentArea}>
         <ScrollView>
-          {/* <Text style={styles.titleText}> {route.params.data.title} </Text>
-          <Text style={styles.dateTime}> {route.params.data.dateTime} </Text> */}
           <View style={styles.descriptionArea}>
             <View style={styles.dateTimeIdArea}>
-              <Text style={styles.dateTime}>{route.params.data.dateTime}</Text>
-              <Text style={styles.id}> ID: {route.params.data.id}</Text>
+              <Text style={styles.dateTime}>
+                {data.dateTime.toLocaleString('en-GB', {timeZone: 'UTC'})}
+              </Text>
+              <Text style={styles.id}> ID: {data.id}</Text>
             </View>
-            <Text style={styles.description}>
-              {route.params.data.description}
-            </Text>
+            <Text style={styles.description}>{data.description}</Text>
           </View>
         </ScrollView>
       </View>
@@ -77,7 +76,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     marginTop: 10,
+    marginHorizontal: 5,
+    marginBottom: 5,
     position: 'relative',
+    shadowColor: '#000000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.23,
+    shadowRadius: 2,
+    elevation: 2,
   },
   description: {
     marginTop: 5,
