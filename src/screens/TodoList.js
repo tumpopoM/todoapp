@@ -12,7 +12,7 @@ import Input from '../components/Input';
 import Items from '../components/Items';
 import {connect} from 'react-redux';
 import {useDispatch, useSelector} from 'react-redux';
-import {addTodo, deleteTodo} from '../actions/index';
+import {addTodo, deleteTodo, checkBoxTodo, editTodo} from '../actions/index';
 
 const initTodos = [
   {
@@ -50,8 +50,6 @@ const initTodos = [
 const TodoList = ({navigation}) => {
   const [isShowAddTasks, setIsShowAddTasks] = useState(false);
   const [isShowEditTasks, setIsShowEditTasks] = useState(false);
-  // const [todos, setTodos] = useState([]);
-  // const todos = useSelect((rootState) => {rootState.todos});
   const todos = useSelector(state => state.todosList);
   const dispatch = useDispatch();
   const [inputTitle, setInputTitle] = useState('');
@@ -103,14 +101,9 @@ const TodoList = ({navigation}) => {
 
   const onPressCheckBox = useCallback(
     item => {
-      const data = [...todos];
-      const index = data.findIndex(i => {
-        return i.id === item.id;
-      });
-      data[index].isDone = !data[index].isDone;
-      setTodos(data);
+      dispatch(checkBoxTodo(item.id));
     },
-    [todos],
+    [dispatch],
   );
 
   const onPressItem = useCallback(
@@ -122,22 +115,21 @@ const TodoList = ({navigation}) => {
 
   const onPressEdit = useCallback(
     id => {
-      const data = [...todos];
-      const index = data.findIndex(i => {
-        return i.id === id;
-      });
-      data[index].title = inputTitle;
-      data[index].description = inputDescription;
-      setTodos(data);
+      const data = {
+        id: id,
+        inputTitle: inputTitle,
+        inputDescription: inputDescription,
+      };
+      dispatch(editTodo(data));
       setIdEdit(null);
       setIsShowEditTasks(!isShowEditTasks);
     },
-    [inputDescription, inputTitle, isShowEditTasks, todos],
+    [dispatch, inputDescription, inputTitle, isShowEditTasks],
   );
 
   const onPressDelete = useCallback(item => {
     dispatch(deleteTodo(item.id));
-    [todos];
+    [dispatch];
   });
 
   return (
