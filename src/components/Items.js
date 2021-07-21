@@ -4,8 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import CheckBox from './CheckBox';
 
 const Items = props => {
-  // const [checkBoxValue, setCheckBoxValue] = useState(false);
-
   return (
     <>
       {props.data.map((item, i) => (
