@@ -33,7 +33,6 @@ const App = () => {
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{
-              gestureEnabled: true,
               gestureDirection: 'horizontal',
               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             }}>
