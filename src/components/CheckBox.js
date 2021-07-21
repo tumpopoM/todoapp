@@ -7,7 +7,7 @@ const CheckBox = props => {
     <TouchableOpacity onPress={props.onChange}>
       <View style={styles.iconBox}>
         {props.value && (
-          <Icon style={styles.icon} size={20} color="white" name="check" />
+          <Icon style={styles.icon} size={17} color="white" name="check" />
         )}
       </View>
     </TouchableOpacity>
@@ -28,6 +28,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: 20,
     height: 20,
+    paddingTop: 1,
+    paddingLeft: 1,
   },
 });
 
