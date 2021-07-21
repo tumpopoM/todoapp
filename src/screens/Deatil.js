@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import dayjs from 'dayjs';
 
 const Detail = ({navigation, route}) => {
   const data = route.params.data;
@@ -25,7 +26,7 @@ const Detail = ({navigation, route}) => {
           <View style={styles.descriptionArea}>
             <View style={styles.dateTimeIdArea}>
               <Text style={styles.dateTime}>
-                {data.dateTime.toLocaleString('en-GB', {timeZone: 'UTC'})}
+                {dayjs(data.dateTime).format('DD/MM/YYYY' + ',' + ' HH:mm A')}
               </Text>
               <Text style={styles.id}> ID: {data.id}</Text>
             </View>
