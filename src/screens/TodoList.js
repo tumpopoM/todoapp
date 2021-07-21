@@ -14,39 +14,6 @@ import {connect} from 'react-redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {addTodo, deleteTodo, checkBoxTodo, editTodo} from '../actions/index';
 
-const initTodos = [
-  {
-    id: 1,
-    title: 'Play Game',
-    description: 'Tomorow i will play game.',
-    dateTime: new Date().getTime(),
-    isDone: false,
-  },
-  {
-    id: 2,
-    title: 'Exercitation exercitation.',
-    description: 'Dolor aute sint veniam id enim ullamco.',
-    dateTime: new Date().getTime(),
-    isDone: true,
-  },
-  {
-    id: 3,
-    title: 'Qui cillum culpa.',
-    description:
-      'Aute elit ullamco laborum deserunt consectetur do adipisicing.',
-    dateTime: new Date().getTime(),
-    isDone: false,
-  },
-  {
-    id: 4,
-    title: 'Irure quis labore excepteur aliqua.',
-    description:
-      'Proident ex consequat amet dolor enim ipsum consectetur aute eu.',
-    dateTime: new Date().getTime(),
-    isDone: false,
-  },
-];
-
 const TodoList = ({navigation}) => {
   const [isShowAddTasks, setIsShowAddTasks] = useState(false);
   const [isShowEditTasks, setIsShowEditTasks] = useState(false);
